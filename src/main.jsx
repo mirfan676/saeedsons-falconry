@@ -18,8 +18,17 @@ const collections=[
  {name:'Bells & Swivels',image:'/brand/bells-swivels.png',note:'Precision field hardware'}
 ];
 
+function StoryPage({type}){
+ const data={history:{eyebrow:'01 — THE BEGINNING',title:'A tradition carried forward.',intro:'Falconry is more than a practice. It is a relationship measured in patience, trust and time.',image:'/brand/saeedsons-story.png',body:'Saeed Sons was built around that relationship. From the first glove cut to every field-tested fitting, the work is guided by respect for the bird and the person who carries it.'},craft:{eyebrow:'02 — THE MAKING',title:'Made slowly. Made to endure.',intro:'Every piece earns its place through material, hand and field.',image:'/brand/gloves-field-series.jpg',body:'We start with hides chosen for touch and strength, cut each panel with purpose, then finish the edge, stitch and fitting by hand. The result is equipment that becomes familiar in the hand instead of merely looking good on a shelf.'},products:{eyebrow:'03 — THE COLLECTIONS',title:'Tools for the open sky.',intro:'Explore gloves, hoods, perches, bells and swivels shaped for real falconry.',image:'/brand/blocks-collection.png',body:'Choose a collection to begin. Each item is available by direct enquiry so we can confirm the right size, finish, availability and delivery before your order is placed.'}}[type];
+ return <main className="story-page"><header className="story-header"><a className="brand official" href="#top"><span className="logo-crop"><img src="/brand/main-logo.png"/></span><span className="brand-words"><b>SAEED SONS</b><small>FALCONRY</small></span></a><a className="back-link" href="#top">BACK TO HOME <ArrowRight/></a></header><section className="story-hero"><div><span className="kicker">{data.eyebrow}</span><h1>{data.title}</h1><p>{data.intro}</p></div><img src={data.image}/></section><section className="story-body"><span className="section-no">THE FIELD NOTE</span><div><p>{data.body}</p><a className="cta dark" href="#shop">EXPLORE EQUIPMENT <ArrowRight/></a></div></section>{type==='craft'&&<section className="story-video"><video src="/brand/glove-craft-1.mp4" autoPlay muted loop playsInline/><div><span className="kicker">THE HAND BEHIND THE WORK</span><h2>Craft is a<br/><i>conversation.</i></h2></div></section>}{type==='products'&&<section className="story-tiles">{collections.map(c=><a href="#shop" key={c.name}><img src={c.image}/><b>{c.name}</b><ArrowRight/></a>)}</section>}<footer><a className="brand" href="#top"><span className="wing">S</span><b>SAEED SONS</b><small>FALCONRY</small></a><p>+92 324 784 8227</p></footer></main>;
+}
+
 function App(){
- const[menu,setMenu]=useState(false),[cart,setCart]=useState(false),[count,setCount]=useState(0),[active,setActive]=useState('All'),[scroll,setScroll]=useState(0);
+ const[menu,setMenu]=useState(false),[cart,setCart]=useState(false),[count,setCount]=useState(0),[active,setActive]=useState('All'),[scroll,setScroll]=useState(0),[route,setRoute]=useState(window.location.hash);
+ useEffect(()=>{const h=()=>{setRoute(window.location.hash);scrollTo(0,0)};addEventListener('hashchange',h);return()=>removeEventListener('hashchange',h)},[]);
+ if(route==='#history') return <StoryPage type="history"/>;
+ if(route==='#craft-story') return <StoryPage type="craft"/>;
+ if(route==='#collections') return <StoryPage type="products"/>;
  useEffect(()=>{const f=()=>setScroll(scrollY);addEventListener('scroll',f,{passive:true});return()=>removeEventListener('scroll',f)},[]);
  const filtered=active==='All'?products:products.filter(p=>p.cat===active);
  const inquire=(name)=>window.open(`https://wa.me/923247848227?text=${encodeURIComponent(`Hello Saeed Sons Falconry, I would like to inquire about ${name}.`)}`,'_blank');
@@ -27,7 +36,7 @@ function App(){
   <header className={scroll>40?'solid':''}>
    <button className="icon mobile" onClick={()=>setMenu(1)} aria-label="Menu"><Menu/></button>
    <a className="brand official" href="#top"><span className="logo-crop"><img src="/brand/main-logo.png"/></span><span className="brand-words"><b>SAEED SONS</b><small>FALCONRY</small></span></a>
-   <nav>{['Equipment','Craft','Our story'].map(x=><a href={x==='Equipment'?'#shop':'#story'} key={x}>{x}</a>)}</nav>
+   <nav><a href="#collections">Collections</a><a href="#craft-story">The making</a><a href="#history">Our story</a></nav>
    <div className="tools"><button className="icon" aria-label="Search"><Search/></button><button className="bag" onClick={()=>setCart(1)}><ShoppingBag/><span>{count}</span></button></div>
   </header>
   <section className="hero" id="top">
@@ -58,7 +67,7 @@ function App(){
   <footer><a className="brand" href="#top"><span className="wing">S</span><b>SAEED SONS</b><small>FALCONRY</small></a><p>Tools for the ancient bond<br/>between falconer and sky.<br/><br/>+92 324 784 8227</p><div><a href="#shop">SHOP</a><a href="#story">OUR STORY</a><a href="#craft">CRAFT</a><a href="https://wa.me/923247848227">WHATSAPP</a></div><small>© 2026 SAEED SONS FALCONRY — ALL RIGHTS RESERVED</small></footer>
   <div className={'overlay '+(menu||cart?'show':'')} onClick={()=>{setMenu(false);setCart(false)}}/>
   <aside className={'drawer '+(cart?'open':'')}><button className="close" onClick={()=>setCart(0)}><X/></button><span className="kicker">YOUR FIELD KIT</span><h2>The carry.</h2>{count?<><div className="cart-item"><img src="/falconry-collection.png"/><div><b>Selected equipment</b><small>Field-ready / Brown</small><div><button><Minus/></button><span>{count}</span><button onClick={()=>setCount(c=>c+1)}><Plus/></button></div></div></div><button className="checkout">CHECKOUT — ${count*145} <ArrowRight/></button></>:<p className="empty">Your kit is empty.<br/>Choose something built for the field.</p>}</aside>
-  <aside className={'drawer navdraw '+(menu?'open':'')}><button className="close" onClick={()=>setMenu(0)}><X/></button>{['Equipment','Our story','Craft','Contact'].map(x=><a onClick={()=>setMenu(0)} href={x==='Equipment'?'#shop':'#story'}>{x}<ArrowRight/></a>)}</aside>
+  <aside className={'drawer navdraw '+(menu?'open':'')}><button className="close" onClick={()=>setMenu(0)}><X/></button>{[['Collections','#collections'],['The making','#craft-story'],['Our story','#history'],['Contact','https://wa.me/923247848227']].map(([x,href])=><a onClick={()=>setMenu(0)} href={href} key={x}>{x}<ArrowRight/></a>)}</aside>
  </main>
 }
 createRoot(document.getElementById('root')).render(<App/>);
