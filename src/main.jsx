@@ -50,11 +50,12 @@ function App(){
  const placeWhatsAppOrder=async(event)=>{event.preventDefault();const f=new FormData(event.currentTarget);const order={customer_name:String(f.get('name')),phone:String(f.get('phone')),country:String(f.get('country')),city:String(f.get('city')),address:String(f.get('address')),items:cartItems.map(x=>({name:x.name,category:x.cat,quantity:x.qty,price:typeof x.price==='number'?x.price:null})),subtotal:total,status:'whatsapp_pending'};if(supabase){const{error}=await supabase.from('orders').insert(order);if(error)console.warn('Order could not be saved to Supabase:',error.message)}const lines=cartItems.map(x=>'- '+x.name+' | Qty: '+x.qty+' | Price: '+formatPrice(x.price)).join('\n');const text='NEW SAEED SONS FALCONRY ORDER\n\nCustomer: '+f.get('name')+'\nPhone: '+f.get('phone')+'\nCountry: '+f.get('country')+'\nCity: '+f.get('city')+'\nAddress: '+f.get('address')+'\n\nITEMS\n'+lines+'\n\nSubtotal: '+(total?'PKR '+total.toLocaleString():'To confirm')+'\nPlease confirm availability, shipping and payment.';window.open('https://wa.me/923247848227?text='+encodeURIComponent(text),'_blank');setCheckout(false);setCart(false)};
  useEffect(()=>{const h=()=>setRoute(window.location.hash);addEventListener('hashchange',h);return()=>removeEventListener('hashchange',h)},[]);
  useEffect(()=>{const pageRoutes=['#history','#craft-story','#collections','#admin'];if(route&&route!=='#top'&&!pageRoutes.includes(route)){requestAnimationFrame(()=>document.getElementById(route.slice(1))?.scrollIntoView({behavior:'smooth',block:'start'}))}else if(pageRoutes.includes(route)){scrollTo(0,0)}},[route]);
+ useEffect(()=>{const f=()=>setScroll(scrollY);addEventListener('scroll',f,{passive:true});return()=>removeEventListener('scroll',f)},[]);
  if(route==='#history') return <StoryPage type="history"/>;
  if(route==='#craft-story') return <StoryPage type="craft"/>;
  if(route==='#collections') return <StoryPage type="products"/>;
  if(route==='#admin') return <AdminPage/>;
- useEffect(()=>{const f=()=>setScroll(scrollY);addEventListener('scroll',f,{passive:true});return()=>removeEventListener('scroll',f)},[]);
+
  const filtered=active==='All'?products:products.filter(p=>p.cat===active);
  const inquire=(name)=>window.open(`https://wa.me/923247848227?text=${encodeURIComponent(`Hello Saeed Sons Falconry, I would like to inquire about ${name}.`)}`,'_blank');
  return <main>
@@ -96,4 +97,5 @@ function App(){
  </main>
 }
 createRoot(document.getElementById('root')).render(<App/>);
+
 
