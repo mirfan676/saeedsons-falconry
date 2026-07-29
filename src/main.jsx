@@ -27,7 +27,14 @@ function StoryPage({type}){
 }
 
 function App(){
- const[menu,setMenu]=useState(false),[cart,setCart]=useState(false),[count,setCount]=useState(0),[active,setActive]=useState('All'),[scroll,setScroll]=useState(0),[route,setRoute]=useState(window.location.hash);
+ const[menu,setMenu]=useState(false),[cart,setCart]=useState(false),[cartItems,setCartItems]=useState(()=>JSON.parse(localStorage.getItem('falconry-cart')||'[]')),[checkout,setCheckout]=useState(false),[active,setActive]=useState('All'),[scroll,setScroll]=useState(0),[route,setRoute]=useState(window.location.hash);
+ useEffect(()=>{localStorage.setItem('falconry-cart',JSON.stringify(cartItems))},[cartItems]);
+ const addToCart=(product)=>setCartItems(items=>{const found=items.find(x=>x.name===product.name);return found?items.map(x=>x.name===product.name?{...x,qty:x.qty+1}:x):[...items,{...product,qty:1}]});
+ const updateQty=(name,delta)=>setCartItems(items=>items.map(x=>x.name===name?{...x,qty:Math.max(0,x.qty+delta)}:x).filter(x=>x.qty>0));
+ const cartCount=cartItems.reduce((sum,x)=>sum+x.qty,0);
+ const total=cartItems.reduce((sum,x)=>sum+(typeof x.price==='number'?x.price*x.qty:0),0);
+ const formatPrice=(p)=>typeof p==='number'?'PKR '+p.toLocaleString():'Price to confirm';
+ const placeWhatsAppOrder=(event)=>{event.preventDefault();const f=new FormData(event.currentTarget);const lines=cartItems.map(x=>'- '+x.name+' | Qty: '+x.qty+' | Price: '+formatPrice(x.price)).join('\n');const text='NEW SAEED SONS FALCONRY ORDER\n\nCustomer: '+f.get('name')+'\nPhone: '+f.get('phone')+'\nCity: '+f.get('city')+'\nAddress: '+f.get('address')+'\n\nITEMS\n'+lines+'\n\nSubtotal: '+(total?'PKR '+total.toLocaleString():'To confirm')+'\nPlease confirm availability, shipping and payment.';window.open('https://wa.me/923247848227?text='+encodeURIComponent(text),'_blank');setCheckout(false);setCart(false)};
  useEffect(()=>{const h=()=>{setRoute(window.location.hash);scrollTo(0,0)};addEventListener('hashchange',h);return()=>removeEventListener('hashchange',h)},[]);
  if(route==='#history') return <StoryPage type="history"/>;
  if(route==='#craft-story') return <StoryPage type="craft"/>;
@@ -40,7 +47,7 @@ function App(){
    <button className="icon mobile" onClick={()=>setMenu(1)} aria-label="Menu"><Menu/></button>
    <a className="brand official" href="#top"><span className="logo-crop"><img src="/brand/main-logo.png"/></span><span className="brand-words"><b>SAEED SONS</b><small>FALCONRY</small></span></a>
    <nav><a href="#collections">Collections</a><a href="#craft-story">The making</a><a href="#history">Our story</a></nav>
-   <div className="tools"><button className="icon" aria-label="Search"><Search/></button><button className="bag" onClick={()=>setCart(1)}><ShoppingBag/><span>{count}</span></button></div>
+   <div className="tools"><button className="icon" aria-label="Search"><Search/></button><button className="bag" onClick={()=>setCart(1)}><ShoppingBag/><span>{cartCount}</span></button></div>
   </header>
   <section className="hero" id="top">
    <div className="hero-bg" style={{transform:`translateY(${scroll*.12}px) scale(1.04)`}}/>
@@ -59,9 +66,9 @@ function App(){
   <section className="collection" id="gloves">
    <div className="collection-top"><div><span className="kicker">03 — REAL PRODUCT PHOTOGRAPHY</span><h2>The glove<br/><i>collection.</i></h2></div><p>Hand-finished protection in multiple<br/>leathers, lengths and colourways.</p></div>
    <div className="filters">{['All','Gloves','Blocks & Perches','Falcon Hoods'].map(x=><button className={active===x?'active':''} onClick={()=>setActive(x)} key={x}>{x}</button>)}</div>
-   <div className="products">{filtered.map((p,i)=><article key={p.name}>
-    <div className="product-image"><img src={p.image}/><span>{p.tag}</span><button onClick={()=>inquire(p.name)} aria-label={'Inquire about '+p.name}><ArrowRight/></button></div>
-    <div className="product-meta"><div><small>{p.cat}</small><h3>{p.name}</h3><p>{p.desc}</p></div><button className="price-link" onClick={()=>inquire(p.name)}>INQUIRE</button></div>
+   <div className="products">{filtered.map(p=><article key={p.name}>
+    <div className="product-image"><img src={p.image}/><span>{p.tag}</span><button onClick={()=>addToCart(p)} aria-label={'Add '+p.name+' to cart'}><ShoppingBag/></button></div>
+    <div className="product-meta"><div><small>{p.cat}</small><h3>{p.name}</h3><p>{p.desc}</p><strong>{formatPrice(p.price)}</strong></div><button className="price-link" onClick={()=>addToCart(p)}>ADD TO CART</button></div>
    </article>)}</div>
   </section>
   <section className="craft" id="craft"><img src="/brand/saeedsons-story.png"/><div><span className="kicker">03 — TRADITION · PASSION · HERITAGE</span><h2>More than equipment.<br/><i>A living tradition.</i></h2><p>Saeed Sons preserves the timeless art of falconry through experienced support, premium field equipment and a deep respect for the bond between falconer and bird.</p><div className="stats"><span><b>Field</b><small>TESTED EQUIPMENT</small></span><span><b>Global</b><small>FALCONRY SUPPORT</small></span></div></div></section>
@@ -69,7 +76,7 @@ function App(){
   <section className="dispatch"><Feather/><span>FIELD NOTES / 01</span><h2>Stories from<br/>the <i>open sky.</i></h2><p>Craft notes, field wisdom and dispatches from falconers around the world.</p><form onSubmit={e=>e.preventDefault()}><input placeholder="YOUR EMAIL ADDRESS"/><button>JOIN THE FLIGHT <ArrowRight/></button></form></section>
   <footer><a className="brand official" href="#top"><span className="logo-crop"><img src="/brand/main-logo.png"/></span><span className="brand-words"><b>SAEED SONS</b><small>FALCONRY</small></span></a><p>Tools for the ancient bond<br/>between falconer and sky.<br/><br/>+92 324 784 8227</p><div><a href="#shop">SHOP</a><a href="#story">OUR STORY</a><a href="#craft">CRAFT</a><a href="https://wa.me/923247848227">WHATSAPP</a></div><small>© 2026 SAEED SONS FALCONRY — ALL RIGHTS RESERVED</small></footer>
   <div className={'overlay '+(menu||cart?'show':'')} onClick={()=>{setMenu(false);setCart(false)}}/>
-  <aside className={'drawer '+(cart?'open':'')}><button className="close" onClick={()=>setCart(0)}><X/></button><span className="kicker">YOUR FIELD KIT</span><h2>The carry.</h2>{count?<><div className="cart-item"><img src="/brand/gloves-natural-range.jpg"/><div><b>Selected equipment</b><small>Field-ready / Brown</small><div><button><Minus/></button><span>{count}</span><button onClick={()=>setCount(c=>c+1)}><Plus/></button></div></div></div><button className="checkout">CHECKOUT — ${count*145} <ArrowRight/></button></>:<p className="empty">Your kit is empty.<br/>Choose something built for the field.</p>}</aside>
+  <aside className={'drawer '+(cart?'open':'')}><button className="close" onClick={()=>{setCart(0);setCheckout(false)}}><X/></button><span className="kicker">YOUR FIELD KIT</span><h2>{checkout?'Order details':'The carry.'}</h2>{checkout?<form className="order-form" onSubmit={placeWhatsAppOrder}><input name="name" required placeholder="YOUR NAME"/><input name="phone" required placeholder="PHONE / WHATSAPP"/><input name="city" required placeholder="CITY"/><textarea name="address" required placeholder="DELIVERY ADDRESS"/><button className="checkout" type="submit">SEND ORDER ON WHATSAPP <ArrowRight/></button></form>:cartItems.length?<><div className="cart-list">{cartItems.map(item=><div className="cart-item" key={item.name}><img src={item.image}/><div><b>{item.name}</b><small>{formatPrice(item.price)}</small><div className="qty"><button onClick={()=>updateQty(item.name,-1)}><Minus/></button><span>{item.qty}</span><button onClick={()=>updateQty(item.name,1)}><Plus/></button></div></div></div>)}</div><p className="cart-total">Subtotal: <b>{total?'PKR '+total.toLocaleString():'Price to confirm'}</b></p><button className="checkout" onClick={()=>setCheckout(true)}>CHECKOUT ON WHATSAPP <ArrowRight/></button></>:<p className="empty">Your kit is empty.<br/>Choose something built for the field.</p>}</aside>
   <aside className={'drawer navdraw '+(menu?'open':'')}><button className="close" onClick={()=>setMenu(0)}><X/></button>{[['Collections','#collections'],['The making','#craft-story'],['Our story','#history'],['Contact','https://wa.me/923247848227']].map(([x,href])=><a onClick={()=>setMenu(0)} href={href} key={x}>{x}<ArrowRight/></a>)}</aside>
  </main>
 }
