@@ -10,6 +10,8 @@
   created_at timestamptz not null default now()
 );
 
+alter table public.orders add column if not exists country text not null default '';
+
 alter table public.orders enable row level security;
 
 drop policy if exists "Public can create order requests" on public.orders;
@@ -30,3 +32,4 @@ on public.orders for update
 to authenticated
 using ((auth.jwt() ->> 'email') = 'admin@saeedsonsfalconry.com')
 with check ((auth.jwt() ->> 'email') = 'admin@saeedsonsfalconry.com');
+
