@@ -17,3 +17,16 @@ create policy "Public can create order requests"
 on public.orders for insert
 to anon, authenticated
 with check (true);
+
+drop policy if exists "Admin can view orders" on public.orders;
+create policy "Admin can view orders"
+on public.orders for select
+to authenticated
+using ((auth.jwt() ->> 'email') = 'admin@saeedsonsfalconry.com');
+
+drop policy if exists "Admin can update orders" on public.orders;
+create policy "Admin can update orders"
+on public.orders for update
+to authenticated
+using ((auth.jwt() ->> 'email') = 'admin@saeedsonsfalconry.com')
+with check ((auth.jwt() ->> 'email') = 'admin@saeedsonsfalconry.com');
