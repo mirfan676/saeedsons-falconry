@@ -2,6 +2,7 @@ import React,{useEffect,useState} from 'react';
 import{createRoot}from'react-dom/client';
 import{ArrowDown,ArrowRight,ChevronLeft,ChevronRight,Feather,Menu,Minus,Plus,Search,ShoppingBag,X}from'lucide-react';
 import'./style.css';
+import { supabase } from './lib/supabase';
 
 const products=[
  {name:'Natural Leather Range',cat:'Gloves',image:'/brand/gloves-natural-range.jpg',tag:'Five colours',desc:'Classic full-cuff falconry gloves from the local range'},
@@ -34,7 +35,7 @@ function App(){
  const cartCount=cartItems.reduce((sum,x)=>sum+x.qty,0);
  const total=cartItems.reduce((sum,x)=>sum+(typeof x.price==='number'?x.price*x.qty:0),0);
  const formatPrice=(p)=>typeof p==='number'?'PKR '+p.toLocaleString():'Price to confirm';
- const placeWhatsAppOrder=(event)=>{event.preventDefault();const f=new FormData(event.currentTarget);const lines=cartItems.map(x=>'- '+x.name+' | Qty: '+x.qty+' | Price: '+formatPrice(x.price)).join('\n');const text='NEW SAEED SONS FALCONRY ORDER\n\nCustomer: '+f.get('name')+'\nPhone: '+f.get('phone')+'\nCity: '+f.get('city')+'\nAddress: '+f.get('address')+'\n\nITEMS\n'+lines+'\n\nSubtotal: '+(total?'PKR '+total.toLocaleString():'To confirm')+'\nPlease confirm availability, shipping and payment.';window.open('https://wa.me/923247848227?text='+encodeURIComponent(text),'_blank');setCheckout(false);setCart(false)};
+ const placeWhatsAppOrder=async(event)=>{event.preventDefault();const f=new FormData(event.currentTarget);const order={customer_name:String(f.get('name')),phone:String(f.get('phone')),city:String(f.get('city')),address:String(f.get('address')),items:cartItems.map(x=>({name:x.name,category:x.cat,quantity:x.qty,price:typeof x.price==='number'?x.price:null})),subtotal:total,status:'whatsapp_pending'};if(supabase){const{error}=await supabase.from('orders').insert(order);if(error)console.warn('Order could not be saved to Supabase:',error.message)}const lines=cartItems.map(x=>'- '+x.name+' | Qty: '+x.qty+' | Price: '+formatPrice(x.price)).join('\n');const text='NEW SAEED SONS FALCONRY ORDER\n\nCustomer: '+f.get('name')+'\nPhone: '+f.get('phone')+'\nCity: '+f.get('city')+'\nAddress: '+f.get('address')+'\n\nITEMS\n'+lines+'\n\nSubtotal: '+(total?'PKR '+total.toLocaleString():'To confirm')+'\nPlease confirm availability, shipping and payment.';window.open('https://wa.me/923247848227?text='+encodeURIComponent(text),'_blank');setCheckout(false);setCart(false)};
  useEffect(()=>{const h=()=>{setRoute(window.location.hash);scrollTo(0,0)};addEventListener('hashchange',h);return()=>removeEventListener('hashchange',h)},[]);
  if(route==='#history') return <StoryPage type="history"/>;
  if(route==='#craft-story') return <StoryPage type="craft"/>;
