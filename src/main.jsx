@@ -76,7 +76,7 @@ function App(){
  if(route==='#history') return <StoryPage type="history"/>;
  if(route==='#craft-story') return <StoryPage type="craft"/>;
  if(route==='#collections') return <StoryPage type="products"/>;
- if(legacyPath==='/shop/gloves/long-cuff-cowhide-gauntlet-extra-heavy-duty/'||legacyPath==='/shop/gloves/long-cuff-cowhide-gauntlet-extra-heavy-duty') return <ProductPage slug="long-cuff-cowhide-gauntlet-extra-heavy-duty"/>; if(legacyPath==='/shop'||legacyPath==='/shop/') return <ShopPage/>; if(route==='#admin') return <AdminPage/>; if(route.startsWith('#product/')) return <ProductPage slug={decodeURIComponent(route.slice(9))}/>;
+ if(legacyPath==='/shop/gloves/long-cuff-cowhide-gauntlet-extra-heavy-duty/'||legacyPath==='/shop/gloves/long-cuff-cowhide-gauntlet-extra-heavy-duty') return <ProductPage slug="long-cuff-cowhide-gauntlet-extra-heavy-duty"/>; if(legacyPath==='/shop'||legacyPath==='/shop/') return <ShopPage/>; if(route==='#shop-page') return <ShopPage/>; if(route==='#admin') return <AdminPage/>; if(route.startsWith('#product/')) return <ProductPage slug={decodeURIComponent(route.slice(9))}/>;
 
  const filtered=active==='All'?products:products.filter(p=>p.cat===active);
  const inquire=(name)=>window.open(`https://wa.me/923247848227?text=${encodeURIComponent(`Hello Saeed Sons Falconry, I would like to inquire about ${name}.`)}`,'_blank');
@@ -119,6 +119,7 @@ function App(){
  </main>
 }
 createRoot(document.getElementById('root')).render(<App/>);
+
 
 
 
