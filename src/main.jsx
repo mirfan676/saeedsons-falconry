@@ -5,6 +5,8 @@ import'./style.css';
 import { supabase } from './lib/supabase';
 
 const products=[
+ {slug:'long-cuff-cowhide-gauntlet-extra-heavy-duty',name:'Long Cuff Cowhide Falconry Gauntlet - Extra Heavy Duty',cat:'Gloves',image:'/brand/long-cuff-cowhide.jpg',tag:'Extra heavy duty',desc:'Long-cuff cowhide gauntlet with reinforced palm, extended forearm protection and a secure D-ring.',details:'Our extra-heavy-duty cowhide gauntlet is made for larger birds and demanding field handling. The extended cuff covers the forearm, while the layered thumb and palm panels protect the hand without losing a steady grip. Customized sizes are available for different falcons.',specs:['Heavy-duty cowhide leather','Extended long cuff','Reinforced thumb and palm','Customized sizes for different falcons','D-ring and wrist tassel detail'],seo:'long cuff cowhide gauntlet, extra heavy duty falcon glove, best falcon gloves UAE Abu Dhabi Qatar'}
+,
  {slug:'natural-leather-falconry-gauntlet',name:'Natural Leather Falconry Gauntlet',cat:'Gloves',image:'/brand/gloves-natural-range.jpg',tag:'Five colourways',desc:'Full-cuff falconry gauntlet in supple leather with a secure D-ring.',details:'A dependable long-cuff glove for daily handling, training and transport. The broad cuff protects the forearm while the shaped thumb and reinforced palm keep the grip natural.',specs:['Full-grain leather outer','Long cuff with hanging D-ring','Available in natural colourways','Sizing and finish confirmed by enquiry'],seo:'best falcon gloves in Abu Dhabi, best falcon gloves UAE, best falcon gloves Qatar'},
  {slug:'tri-colour-field-gauntlet',name:'Tri-Colour Field Gauntlet',cat:'Gloves',image:'/brand/gloves-tricolor.jpg',tag:'Signature build',desc:'Layered leather falconry glove with a distinctive field-ready finish.',details:'Designed for falconers who want protection without losing dexterity. Contrasting panels make the glove easy to identify in a busy mews or field kit.',specs:['Layered leather palm and cuff','Reinforced thumb saddle','D-ring for tether or carry','Available by direct enquiry'],seo:'premium falconry products UAE Qatar Saudi Arabia'},
  {slug:'numbered-field-falconry-glove',name:'Numbered Field Falconry Glove',cat:'Gloves',image:'/brand/gloves-field-series.jpg',tag:'Field ready',desc:'Reinforced dark leather glove for confident field handling.',details:'The numbered field series uses a firmer leather hand and deep cuff for birds that need extra protection. Ask us to match the glove to your bird and hand size.',specs:['Reinforced palm and thumb','Deep protective cuff','Field identification detail','Size consultation available'],seo:'best falcon gloves in Qatar, falcon gloves Dubai, falcon gloves Saudi Arabia'},
@@ -63,11 +65,11 @@ function App(){
  const placeWhatsAppOrder=async(event)=>{event.preventDefault();const f=new FormData(event.currentTarget);const countryValue=String(f.get('country'));const[country,code]=countryValue.split('|');const localPhone=String(f.get('local_phone')).replace(/[^0-9]/g,'');const phone=code+localPhone;const order={customer_name:String(f.get('name')),phone,country,city:String(f.get('city')),address:String(f.get('address')),items:cartItems.map(x=>({name:x.name,category:x.cat,quantity:x.qty,price:typeof x.price==='number'?x.price:null})),subtotal:total,status:'whatsapp_pending'};if(supabase){const{error}=await supabase.from('orders').insert(order);if(error)console.warn('Order could not be saved to Supabase:',error.message)}const lines=cartItems.map(x=>'- '+x.name+' | Qty: '+x.qty+' | Price: '+formatPrice(x.price)).join('\n');const text='NEW SAEED SONS FALCONRY ORDER\n\nCustomer: '+f.get('name')+'\nPhone: '+phone+'\nCountry: '+country+'\nCity: '+f.get('city')+'\nAddress: '+f.get('address')+'\n\nITEMS\n'+lines+'\n\nSubtotal: '+(total?'PKR '+total.toLocaleString():'To confirm')+'\nPlease confirm availability, shipping and payment.';window.open('https://wa.me/923247848227?text='+encodeURIComponent(text),'_blank');setCheckout(false);setCart(false)};
  useEffect(()=>{const h=()=>setRoute(window.location.hash);addEventListener('hashchange',h);return()=>removeEventListener('hashchange',h)},[]);
  useEffect(()=>{const pageRoutes=['#history','#craft-story','#collections','#admin'];if(route&&route!=='#top'&&!pageRoutes.includes(route)){requestAnimationFrame(()=>document.getElementById(route.slice(1))?.scrollIntoView({behavior:'smooth',block:'start'}))}else if(pageRoutes.includes(route)){scrollTo(0,0)}},[route]);
- useEffect(()=>{const f=()=>setScroll(scrollY);addEventListener('scroll',f,{passive:true});return()=>removeEventListener('scroll',f)},[]);
+ useEffect(()=>{const f=()=>setScroll(scrollY);addEventListener('scroll',f,{passive:true});return()=>removeEventListener('scroll',f)},[]); const legacyPath=window.location.pathname;
  if(route==='#history') return <StoryPage type="history"/>;
  if(route==='#craft-story') return <StoryPage type="craft"/>;
  if(route==='#collections') return <StoryPage type="products"/>;
- if(route==='#admin') return <AdminPage/>; if(route.startsWith('#product/')) return <ProductPage slug={decodeURIComponent(route.slice(9))}/>;
+ if(legacyPath==='/shop/gloves/long-cuff-cowhide-gauntlet-extra-heavy-duty/'||legacyPath==='/shop/gloves/long-cuff-cowhide-gauntlet-extra-heavy-duty') return <ProductPage slug="long-cuff-cowhide-gauntlet-extra-heavy-duty"/>; if(route==='#admin') return <AdminPage/>; if(route.startsWith('#product/')) return <ProductPage slug={decodeURIComponent(route.slice(9))}/>;
 
  const filtered=active==='All'?products:products.filter(p=>p.cat===active);
  const inquire=(name)=>window.open(`https://wa.me/923247848227?text=${encodeURIComponent(`Hello Saeed Sons Falconry, I would like to inquire about ${name}.`)}`,'_blank');
@@ -110,6 +112,8 @@ function App(){
  </main>
 }
 createRoot(document.getElementById('root')).render(<App/>);
+
+
 
 
 
