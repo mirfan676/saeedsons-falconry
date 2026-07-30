@@ -72,7 +72,7 @@ function App(){
  const placeWhatsAppOrder=async(event)=>{event.preventDefault();const f=new FormData(event.currentTarget);const countryValue=String(f.get('country'));const[country,code]=countryValue.split('|');const localPhone=String(f.get('local_phone')).replace(/[^0-9]/g,'');const phone=code+localPhone;const order={customer_name:String(f.get('name')),phone,country,city:String(f.get('city')),address:String(f.get('address')),items:cartItems.map(x=>({name:x.name,category:x.cat,quantity:x.qty,price:typeof x.price==='number'?x.price:null})),subtotal:total,status:'whatsapp_pending'};if(supabase){const{error}=await supabase.from('orders').insert(order);if(error)console.warn('Order could not be saved to Supabase:',error.message)}const lines=cartItems.map(x=>'- '+x.name+' | Qty: '+x.qty+' | Price: '+formatPrice(x.price)).join('\n');const text='NEW SAEED SONS FALCONRY ORDER\n\nCustomer: '+f.get('name')+'\nPhone: '+phone+'\nCountry: '+country+'\nCity: '+f.get('city')+'\nAddress: '+f.get('address')+'\n\nITEMS\n'+lines+'\n\nSubtotal: '+(total?'PKR '+total.toLocaleString():'To confirm')+'\nPlease confirm availability, shipping and payment.';window.open('https://wa.me/923247848227?text='+encodeURIComponent(text),'_blank');setCheckout(false);setCart(false)};
  useEffect(()=>{const h=()=>setRoute(window.location.hash);addEventListener('hashchange',h);return()=>removeEventListener('hashchange',h)},[]);
  useEffect(()=>{const pageRoutes=['#history','#craft-story','#collections','#admin'];if(route&&route!=='#top'&&!pageRoutes.includes(route)){requestAnimationFrame(()=>document.getElementById(route.slice(1))?.scrollIntoView({behavior:'smooth',block:'start'}))}else if(pageRoutes.includes(route)){scrollTo(0,0)}},[route]);
- useEffect(()=>{const f=()=>setScroll(scrollY);addEventListener('scroll',f,{passive:true});return()=>removeEventListener('scroll',f)},[]); const legacyPath=window.location.pathname;
+ useEffect(()=>{const f=()=>setScroll(scrollY);addEventListener('scroll',f,{passive:true});return()=>removeEventListener('scroll',f)},[]); useEffect(()=>{const block=(e)=>{if(e.target.closest('img'))e.preventDefault()};document.addEventListener('contextmenu',block);document.addEventListener('dragstart',block);return()=>{document.removeEventListener('contextmenu',block);document.removeEventListener('dragstart',block)}},[]); const legacyPath=window.location.pathname;
  if(route==='#history') return <StoryPage type="history"/>;
  if(route==='#craft-story') return <StoryPage type="craft"/>;
  if(route==='#collections') return <StoryPage type="products"/>;
@@ -119,6 +119,7 @@ function App(){
  </main>
 }
 createRoot(document.getElementById('root')).render(<App/>);
+
 
 
 
