@@ -109,7 +109,7 @@ function App(){
     <div className="product-meta"><div><small>{p.cat}</small><h3><a href={'#product/'+p.slug}>{p.name}</a></h3><p>{p.desc}</p><strong>{formatPrice(p.price)}</strong></div><div className="product-actions"><a className="price-link" href={'#product/'+p.slug}>VIEW DETAILS</a><button className="price-link" onClick={()=>addToCart(p)}>ADD TO CART</button></div></div>
    </article>)}</div>
   </section>
-  <section className="craft" id="craft"><img src="/brand/saeedsons-story.webp" alt="Saeed Sons Falconry workshop and heritage"/><div><span className="kicker">03 - TRADITION  /  PASSION  /  HERITAGE</span><h2>More than equipment.<br/><i>A living tradition.</i></h2><p>Saeed Sons preserves the timeless art of falconry through experienced support, premium field equipment and a deep respect for the bond between falconer and bird.</p><div className="stats"><span><b>Field</b><small>TESTED EQUIPMENT</small></span><span><b>Global</b><small>FALCONRY SUPPORT</small></span></div></div></section>
+  <section className="craft" id="craft"><img src="/brand/living-tradition.webp" alt="Saeed Sons Falconry - tradition, passion and heritage" loading="lazy"/><div><span className="kicker">03 - TRADITION  /  PASSION  /  HERITAGE</span><h2>More than equipment.<br/><i>A living tradition.</i></h2><p>Saeed Sons preserves the timeless art of falconry through experienced support, premium field equipment and a deep respect for the bond between falconer and bird.</p><div className="stats"><span><b>Field</b><small>TESTED EQUIPMENT</small></span><span><b>Global</b><small>FALCONRY SUPPORT</small></span></div></div></section>
   <section className="field-reels"><div className="reel-heading"><span className="kicker">04 - FROM THE WORKSHOP</span><h2>Craft in<br/><i>motion.</i></h2><p>Real materials. Real hands. Equipment made for the field.</p></div>{['glove-craft-1.mp4','glove-craft-2.mp4','glove-craft-3.mp4'].map((v,i)=><figure key={v}><video src={'/brand/'+v} autoPlay muted loop playsInline preload="none"/><figcaption>FIELD CUT / 0{i+1}</figcaption></figure>)}</section>
   <section className="dispatch"><Feather/><span>FIELD NOTES / 01</span><h2>Stories from<br/>the <i>open sky.</i></h2><p>Craft notes, field wisdom and dispatches from falconers around the world.</p><form onSubmit={e=>e.preventDefault()}><input placeholder="YOUR EMAIL ADDRESS"/><button>JOIN THE FLIGHT <ArrowRight/></button></form></section>
   <footer><a className="brand official" href="#top"><span className="logo-crop"><img src="/brand/main-logo.webp" alt="Saeed Sons Falconry logo"/></span><span className="brand-words"><b>SAEED SONS</b><small>FALCONRY</small></span></a><p>Tools for the ancient bond<br/>between falconer and sky.<br/><br/>+92 324 784 8227</p><div><a href="#shop">SHOP</a><a href="#story">OUR STORY</a><a href="#craft">CRAFT</a><a href="https://wa.me/923247848227">WHATSAPP</a></div><small>(c) 2026 SAEED SONS FALCONRY - ALL RIGHTS RESERVED</small></footer>
@@ -119,6 +119,7 @@ function App(){
  </main>
 }
 createRoot(document.getElementById('root')).render(<App/>);
+
 
 
 
