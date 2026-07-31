@@ -65,6 +65,7 @@ function AdminPage(){
 
 function App(){
  const[menu,setMenu]=useState(false),[cart,setCart]=useState(false),[cartItems,setCartItems]=useState(()=>JSON.parse(localStorage.getItem('falconry-cart')||'[]')),[checkout,setCheckout]=useState(false),[active,setActive]=useState('All'),[scroll,setScroll]=useState(0),[route,setRoute]=useState(window.location.pathname);
+ useEffect(()=>{const legacy=window.location.hash;if(!legacy)return;const target=legacy.startsWith('#product/')?'/product/'+legacy.slice(9):({'#shop':'/shop','#shop-page':'/shop','#history':'/story/history','#craft-story':'/story/making','#collections':'/story/collections','#admin':'/admin','#top':'/'}[legacy]||'/');window.history.replaceState({},'',target);setRoute(target)},[]);
  useEffect(()=>{localStorage.setItem('falconry-cart',JSON.stringify(cartItems))},[cartItems]); useEffect(()=>{const refresh=()=>setCartItems(JSON.parse(localStorage.getItem('falconry-cart')||'[]'));addEventListener('falconry-cart-updated',refresh);return()=>removeEventListener('falconry-cart-updated',refresh)},[]);
  const addToCart=(product)=>setCartItems(items=>{const found=items.find(x=>x.name===product.name);return found?items.map(x=>x.name===product.name?{...x,qty:x.qty+1}:x):[...items,{...product,qty:1}]});
  const updateQty=(name,delta)=>setCartItems(items=>items.map(x=>x.name===name?{...x,qty:Math.max(0,x.qty+delta)}:x).filter(x=>x.qty>0));
@@ -121,6 +122,7 @@ function App(){
  </main>
 }
 createRoot(document.getElementById('root')).render(<App/>);
+
 
 
 
