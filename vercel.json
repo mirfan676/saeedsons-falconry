@@ -1,1 +1,1 @@
-﻿{"rewrites":[{"source":"/((?!assets/|brand/|favicon.ico|robots.txt|sitemap.xml).*)","destination":"/"}],"headers":[{"source":"/(.*)","headers":[{"key":"X-Content-Type-Options","value":"nosniff"}]}]}
+﻿{"version":2,"routes":[{"handle":"filesystem"},{"src":"/.*","dest":"/index.html"}]}
