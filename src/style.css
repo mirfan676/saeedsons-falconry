@@ -100,3 +100,7 @@ img,video{max-width:100%}
 @media(max-width:900px){.craft>img{height:auto;aspect-ratio:1/1;padding:24px}}
 @media(max-width:560px){.craft>img{height:auto;aspect-ratio:1/1;padding:12px}}
 
+
+
+@media(max-width:700px){.hero-bg,.flight-lines i,.field-reels figure{animation:none!important}.flight-lines{display:none}.field-reels figure{transform:none!important}}
+
