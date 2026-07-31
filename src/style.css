@@ -92,3 +92,11 @@ img,video{max-width:100%}
 @keyframes reel-float{from{transform:translateY(0)}to{transform:translateY(-10px)}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
 
+
+
+/* Preserve the square heritage artwork without cropping */
+.craft{grid-template-columns:minmax(0,1fr) minmax(0,1fr);min-height:0}
+.craft>img{height:auto;aspect-ratio:1/1;object-fit:contain;object-position:center;background:#07111f;padding:clamp(18px,3vw,48px);align-self:center}
+@media(max-width:900px){.craft>img{height:auto;aspect-ratio:1/1;padding:24px}}
+@media(max-width:560px){.craft>img{height:auto;aspect-ratio:1/1;padding:12px}}
+
