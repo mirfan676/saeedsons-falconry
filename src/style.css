@@ -104,3 +104,6 @@ img,video{max-width:100%}
 
 @media(max-width:700px){.hero-bg,.flight-lines i,.field-reels figure{animation:none!important}.flight-lines{display:none}.field-reels figure{transform:none!important}}
 
+
+.product-variant{display:block;width:min(100%,360px);margin:18px 0;padding:13px 15px;border:1px solid rgba(227,166,78,.55);background:#071624;color:#f4efe5;font-size:12px;letter-spacing:.04em}
+
