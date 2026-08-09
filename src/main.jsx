@@ -2,6 +2,7 @@
 import{createRoot}from'react-dom/client';
 import{ArrowDown,ArrowRight,ChevronLeft,ChevronRight,Feather,Menu,Minus,Plus,Search,ShoppingBag,X}from'lucide-react';
 import'./style.css';
+import GloveGuide from './GloveGuide.jsx';
 
 const desktopMotion=typeof window!=='undefined'&&window.matchMedia('(min-width:701px)').matches;
 const currencyRates={PKR:1,AED:76,SAR:74,QAR:77,USD:280,GBP:360,KWD:910};
@@ -85,6 +86,7 @@ function App(){
  if(route==='/story/history') return <StoryPage type="history"/>;
  if(route==='/story/making') return <StoryPage type="craft"/>;
  if(route==='/story/collections') return <StoryPage type="products"/>;
+ if(route==='/guides/best-falconry-gloves-dubai') return <GloveGuide/>;
  if(legacyPath==='/shop/gloves/long-cuff-cowhide-gauntlet-extra-heavy-duty/'||legacyPath==='/shop/gloves/long-cuff-cowhide-gauntlet-extra-heavy-duty') return <ProductPage slug="long-cuff-cowhide-gauntlet-extra-heavy-duty"/>; if(legacyPath==='/shop'||legacyPath==='/shop/') return <ShopPage/>; if(route==='/shop') return <ShopPage/>; if(route==='/admin') return <AdminPage/>; if(route.startsWith('/product/')) return <ProductPage slug={decodeURIComponent(route.slice(9))}/>;
 
  const filtered=products.filter(p=>p.cat==='Gloves');
@@ -128,6 +130,7 @@ function App(){
  </main>
 }
 createRoot(document.getElementById('root')).render(<App/>);
+
 
 
 
