@@ -1,1 +1,1 @@
-﻿{"rewrites":[{"source":"/product/:path*","destination":"/index.html"},{"source":"/shop","destination":"/index.html"},{"source":"/story/:path*","destination":"/index.html"},{"source":"/guides/:path*","destination":"/index.html"},{"source":"/admin","destination":"/index.html"}]}
+﻿{"rewrites":[{"source":"/(.*)","destination":"/index.html"}]}
