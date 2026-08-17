@@ -75,6 +75,11 @@ img,video{max-width:100%}
 .product-detail-media.protected-media{isolation:isolate}.product-detail-media.protected-media .image-watermark{z-index:2}
 @media(max-width:600px){.product-title{font-size:40px!important}.ask-price{align-items:stretch;flex-direction:column}.ask-price select,.ask-price .detail-whatsapp{width:100%}}
 
+/* Polished wooden block perch product */
+.block-product-gallery{padding:88px 7vw;background:#0b2032}.block-gallery-heading{display:grid;grid-template-columns:minmax(280px,.8fr) 1.2fr;gap:6vw;align-items:end;margin-bottom:44px}.block-gallery-heading h2{font-size:clamp(40px,5.5vw,76px);font-weight:400;line-height:.98;margin:16px 0 0}.block-gallery-heading p{color:#b6c9d8;line-height:1.75;font-size:17px;max-width:620px}.block-product-gallery .media-gallery{grid-template-columns:repeat(3,1fr)}.block-product-gallery .media-gallery img{object-fit:cover}.product-care{display:grid;grid-template-columns:180px 1fr;gap:45px;padding:78px 7vw;background:#091c2d}.product-care h2{font-size:clamp(40px,5vw,72px);font-weight:400;line-height:1;margin:0 0 28px}.care-list{display:grid;grid-template-columns:1fr 1fr;gap:0 28px;max-width:900px}.care-list p{border-top:1px solid rgba(255,255,255,.14);color:#c3d1dc;line-height:1.6;margin:0;padding:18px 0}.block-product-video{display:grid;grid-template-columns:.7fr 1.3fr;gap:7vw;align-items:center;padding:88px 7vw 110px;background:#0b2032}.block-product-video h2{font-size:clamp(40px,5.4vw,76px);font-weight:400;line-height:.98;margin:18px 0 24px}.block-product-video p{color:#b6c9d8;line-height:1.75;font-size:17px}.block-product-video video{width:100%;aspect-ratio:1/1;object-fit:cover;background:#02070c;border:1px solid rgba(218,159,67,.35)}
+@media(max-width:850px){.block-gallery-heading,.product-care,.block-product-video{grid-template-columns:1fr}.block-product-gallery .media-gallery{grid-template-columns:1fr 1fr}.product-care,.block-product-video{padding:65px 5vw}.block-product-gallery{padding:65px 5vw}.care-list{grid-template-columns:1fr}}
+@media(max-width:550px){.block-product-gallery .media-gallery{grid-template-columns:1fr}.block-product-video{padding-bottom:80px}}
+
 
 
 
