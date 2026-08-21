@@ -2,10 +2,10 @@ import React,{useEffect} from 'react';
 import {ArrowRight,ChevronLeft} from 'lucide-react';
 
 const products=[
- ['/product/cream-braided-massal-jesses','Cream Braided Massal Jesses & Leash Set','/brand/jesses/cream-massal.webp','Cream Massal jesses with a light braided finish.'],
- ['/product/tan-braided-massal-jesses','Tan Braided Massal Jesses & Anklet Bundle','/brand/jesses/tan-massal.webp','Neutral tan Massal braid for an everyday field kit.'],
- ['/product/black-yellow-dowar-jesses','Black & Yellow Dowar Braided Jesses Set','/brand/jesses/black-yellow-dowar.webp','High-contrast Dowar braid for easy identification.'],
- ['/product/black-dowar-jesses','Black Dowar Braided Jesses & Leash Bundle','/brand/jesses/black-dowar.webp','A discreet black Dowar braid and leash bundle.']
+ ['/product/cream-braided-massal-jesses','Cream Braided Massal Jesses & Leash Set','/brand/jesses/generated-cream-massal.png','Cream Massal jesses with a light braided finish.'],
+ ['/product/tan-braided-massal-jesses','Tan Braided Massal Jesses & Anklet Bundle','/brand/jesses/generated-tan-massal.png','Neutral tan Massal braid for an everyday field kit.'],
+ ['/product/black-yellow-dowar-jesses','Black & Yellow Dowar Braided Jesses Set','/brand/jesses/generated-black-yellow-dowar.png','High-contrast Dowar braid for easy identification.'],
+ ['/product/black-dowar-jesses','Black Dowar Braided Jesses & Leash Bundle','/brand/jesses/generated-black-dowar.png','A discreet black Dowar braid and leash bundle.']
 ];
 
 export default function JessesGuide(){
